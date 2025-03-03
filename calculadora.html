@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mega Calculadora</title>
+  <link rel="stylesheet" href="estilo-calculadora.css">
+  <!-- Se incluye math.js para cálculos simbólicos y evaluación de expresiones -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.8.0/math.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>Mega Calculadora</h1>
+    <nav>
+      <button class="tab-button active" data-tab="basico">Operaciones Básicas</button>
+      <button class="tab-button" data-tab="avanzado">Operaciones Avanzadas</button>
+      <button class="tab-button" data-tab="trigonometrico">Funciones Trigonométricas</button>
+      <button class="tab-button" data-tab="complejos">Números Complejos</button>
+      <button class="tab-button" data-tab="estadistico">Estadística</button>
+      <button class="tab-button" data-tab="matrices">Álgebra y Matrices</button>
+      <button class="tab-button" data-tab="conversiones">Conversiones</button>
+      <button class="tab-button" data-tab="simbólico">Cálculo Simbólico</button>
+    </nav>
+    <div class="tab-content">
+      
+      <!-- Operaciones Básicas -->
+      <div id="basico" class="tab-panel active">
+        <h2>Operaciones Básicas</h2>
+        <input type="number" id="basico-num1" placeholder="Primer número">
+        <input type="number" id="basico-num2" placeholder="Segundo número">
+        <div class="buttons">
+          <button onclick="calcularBasico('sumar')">Sumar</button>
+          <button onclick="calcularBasico('restar')">Restar</button>
+          <button onclick="calcularBasico('multiplicar')">Multiplicar</button>
+          <button onclick="calcularBasico('dividir')">Dividir</button>
+        </div>
+        <div class="result"><p id="basico-result">Resultado: 0</p></div>
+      </div>
+      
+      <!-- Operaciones Avanzadas -->
+      <div id="avanzado" class="tab-panel">
+        <h2>Operaciones Avanzadas</h2>
+        <!-- Potenciación -->
+        <div class="operation">
+          <h3>Potenciación</h3>
+          <input type="number" id="pot-base" placeholder="Base">
+          <input type="number" id="pot-exp" placeholder="Exponente">
+          <button onclick="potenciacion()">Calcular</button>
+          <p id="pot-result">Resultado:</p>
+        </div>
+        <!-- Radicación -->
+        <div class="operation">
+          <h3>Radicación</h3>
+          <input type="number" id="radicando" placeholder="Radicando">
+          <input type="number" id="indice" placeholder="Índice (n-ésima raíz)">
+          <button onclick="radicacion()">Calcular</button>
+          <p id="rad-result">Resultado:</p>
+        </div>
+        <!-- Logaritmos -->
+        <div class="operation">
+          <h3>Logaritmos</h3>
+          <input type="number" id="log-num" placeholder="Número">
+          <input type="number" id="log-base" placeholder="Base (vacío para ln)">
+          <button onclick="logaritmo()">Calcular</button>
+          <p id="log-result">Resultado:</p>
+        </div>
+        <!-- Factorial -->
+        <div class="operation">
+          <h3>Factorial</h3>
+          <input type="number" id="fact-num" placeholder="Número entero">
+          <button onclick="factorial()">Calcular</button>
+          <p id="fact-result">Resultado:</p>
+        </div>
+        <!-- Módulo o Residuo -->
+        <div class="operation">
+          <h3>Módulo (Residuo)</h3>
+          <input type="number" id="mod-num1" placeholder="Dividendo">
+          <input type="number" id="mod-num2" placeholder="Divisor">
+          <button onclick="modulo()">Calcular</button>
+          <p id="mod-result">Resultado:</p>
+        </div>
+        <!-- Redondeo y Truncamiento -->
+        <div class="operation">
+          <h3>Redondeo y Truncamiento</h3>
+          <input type="number" id="round-num" placeholder="Número">
+          <button onclick="redondeo()">Calcular</button>
+          <p id="round-result">Resultado:</p>
+        </div>
+      </div>
+      
+      <!-- Funciones Trigonométricas -->
+      <div id="trigonometrico" class="tab-panel">
+        <h2>Funciones Trigonométricas</h2>
+        <input type="number" id="trigo-input" placeholder="Ángulo (grados o valor)">
+        <select id="trigo-func">
+          <option value="sin">Seno</option>
+          <option value="cos">Coseno</option>
+          <option value="tan">Tangente</option>
+          <option value="asin">Arcoseno</option>
+          <option value="acos">Arcocoseno</option>
+          <option value="atan">Arcotangente</option>
+          <option value="sinh">Seno Hiperbólico</option>
+          <option value="cosh">Coseno Hiperbólico</option>
+          <option value="tanh">Tangente Hiperbólica</option>
+        </select>
+        <button onclick="calcularTrigonometrico()">Calcular</button>
+        <p id="trigo-result">Resultado:</p>
+        <p class="note">Nota: Para sin, cos y tan se espera ángulo en grados; para funciones inversas, el valor debe estar entre –1 y 1.</p>
+      </div>
+      
+      <!-- Números Complejos -->
+      <div id="complejos" class="tab-panel">
+        <h2>Números Complejos</h2>
+        <div class="complex-input">
+          <h3>Número 1</h3>
+          <input type="number" id="comp1-real" placeholder="Parte real">
+          <input type="number" id="comp1-imag" placeholder="Parte imaginaria">
+        </div>
+        <div class="complex-input">
+          <h3>Número 2</h3>
+          <input type="number" id="comp2-real" placeholder="Parte real">
+          <input type="number" id="comp2-imag" placeholder="Parte imaginaria">
+        </div>
+        <select id="comp-op">
+          <option value="sumar">Sumar</option>
+          <option value="restar">Restar</option>
+          <option value="multiplicar">Multiplicar</option>
+          <option value="dividir">Dividir</option>
+          <option value="modulo">Módulo (N1)</option>
+          <option value="argumento">Argumento (N1)</option>
+        </select>
+        <button onclick="operarComplejos()">Calcular</button>
+        <p id="comp-result">Resultado:</p>
+      </div>
+      
+      <!-- Estadística -->
+      <div id="estadistico" class="tab-panel">
+        <h2>Estadística</h2>
+        <textarea id="stats-data" placeholder="Ingresa números separados por comas"></textarea>
+        <div class="buttons">
+          <button onclick="calcularEstadisticas('media')">Media</button>
+          <button onclick="calcularEstadisticas('mediana')">Mediana</button>
+          <button onclick="calcularEstadisticas('moda')">Moda</button>
+          <button onclick="calcularEstadisticas('varianza')">Varianza</button>
+          <button onclick="calcularEstadisticas('desviacion')">Desviación</button>
+          <button onclick="calcularEstadisticas('cuartiles')">Cuartiles</button>
+        </div>
+        <p id="stats-result">Resultado:</p>
+      </div>
+      
+      <!-- Álgebra y Matrices -->
+      <div id="matrices" class="tab-panel">
+        <h2>Álgebra y Matrices (2×2)</h2>
+        <div class="matrix">
+          <h3>Matriz A</h3>
+          <input type="number" id="a11" placeholder="a11">
+          <input type="number" id="a12" placeholder="a12">
+          <input type="number" id="a21" placeholder="a21">
+          <input type="number" id="a22" placeholder="a22">
+        </div>
+        <div class="matrix">
+          <h3>Matriz B (para suma/multiplicación)</h3>
+          <input type="number" id="b11" placeholder="b11">
+          <input type="number" id="b12" placeholder="b12">
+          <input type="number" id="b21" placeholder="b21">
+          <input type="number" id="b22" placeholder="b22">
+        </div>
+        <div class="buttons">
+          <button onclick="determinante()">Determinante de A</button>
+          <button onclick="sumarMatrices()">Suma A + B</button>
+          <button onclick="multiplicarMatrices()">Multiplicación A × B</button>
+          <button onclick="resolverSistema()">Resolver sistema (Ax = b)</button>
+        </div>
+        <p id="matrices-result">Resultado:</p>
+      </div>
+      
+      <!-- Conversiones -->
+      <div id="conversiones" class="tab-panel">
+        <h2>Conversiones</h2>
+        <div class="conversion">
+          <h3>Bases Numéricas</h3>
+          <input type="text" id="base-num" placeholder="Número">
+          <select id="base-from">
+            <option value="2">Binario</option>
+            <option value="8">Octal</option>
+            <option value="10" selected>Decimal</option>
+            <option value="16">Hexadecimal</option>
+          </select>
+          <select id="base-to">
+            <option value="2">Binario</option>
+            <option value="8">Octal</option>
+            <option value="10" selected>Decimal</option>
+            <option value="16">Hexadecimal</option>
+          </select>
+          <button onclick="convertirBase()">Convertir Base</button>
+          <p id="base-result">Resultado:</p>
+        </div>
+        <div class="conversion">
+          <h3>Unidades</h3>
+          <input type="number" id="unit-input" placeholder="Valor">
+          <select id="unit-type">
+            <option value="c-f">Celsius a Fahrenheit</option>
+            <option value="f-c">Fahrenheit a Celsius</option>
+            <option value="km-mi">Kilómetros a Millas</option>
+            <option value="mi-km">Millas a Kilómetros</option>
+          </select>
+          <button onclick="convertirUnidad()">Convertir Unidad</button>
+          <p id="unit-result">Resultado:</p>
+        </div>
+      </div>
+      
+      <!-- Cálculo Simbólico -->
+      <div id="simbólico" class="tab-panel">
+        <h2>Cálculo Simbólico</h2>
+        <div class="operation">
+          <h3>Derivada</h3>
+          <input type="text" id="expr-deriv" placeholder="Expresión (ej: x^2)">
+          <input type="text" id="var-deriv" placeholder="Variable (ej: x)">
+          <button onclick="derivar()">Calcular Derivada</button>
+          <p id="deriv-result">Resultado:</p>
+        </div>
+        <div class="operation">
+          <h3>Integral (numérica)</h3>
+          <input type="text" id="expr-int" placeholder="Función (ej: x^2)">
+          <input type="number" id="lim-inf" placeholder="Límite inferior">
+          <input type="number" id="lim-sup" placeholder="Límite superior">
+          <button onclick="integrar()">Calcular Integral</button>
+          <p id="int-result">Resultado:</p>
+        </div>
+        <div class="operation">
+          <h3>Límite</h3>
+          <input type="text" id="expr-lim" placeholder="Función (ej: (x^2-1)/(x-1))">
+          <input type="number" id="lim-x" placeholder="Valor a donde tiende x">
+          <button onclick="calcularLimite()">Calcular Límite</button>
+          <p id="lim-result">Resultado:</p>
+        </div>
+        <div class="operation">
+          <h3>Ecuación Diferencial (numérica)</h3>
+          <input type="text" id="diff-eq" placeholder="dy/dx = f(x,y) (ej: y - x)">
+          <input type="number" id="diff-x0" placeholder="x₀">
+          <input type="number" id="diff-y0" placeholder="y₀">
+          <input type="number" id="diff-x" placeholder="Valor de x">
+          <button onclick="resolverEcuacion()">Resolver Ecuación</button>
+          <p id="diff-result">Resultado:</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="calculadora.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-/* Reset y estilos básicos */
+
 * {
     margin: 0;
     padding: 0;
@@ -44,7 +44,7 @@
     font-size: 1.1rem;
   }
   
-  /* Navegación por pestañas */
+  /* Navegación por las pestañas */
   nav {
     display: flex;
     flex-wrap: wrap;
@@ -76,7 +76,7 @@
     box-shadow: 0 3px 5px rgba(0,0,0,0.2);
   }
   
-  /* Pestañas (tab panels) */
+  /* Pestañas  */
   .tab-panel {
     display: none;
     animation: fadeIn 0.3s ease-in;
